@@ -2,13 +2,32 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/usuario/usuario.css}" type="text/css"/>
     <title>Title</title>
 </head>
 <body>
     <h2>Lista de Usuarios:</h2>
     <ul>
         <li th:each="usuario : ${usuarios}" th:text="${usuario}"></li>
-<!--        <li th:each="produto : ${produtos}" th:text="${produto}"></li>-->
     </ul>
+
+    <br />
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="usuario : ${usuarios}">
+                <td th:text="${usuario.nome}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <br />
+    <a th:href="@{/hotel}">Voltar</a>
 </body>
 </html>
