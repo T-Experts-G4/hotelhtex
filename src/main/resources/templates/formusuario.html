@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de usuários</title>
+</head>
+<body>
+<form th:object="${usuarioFormInputDto}" action="/usuario/cadastra" method="post"><br />
+    Nome:<input th:field="*{nome}" /> <span th:errors="*{nome}"></span> <br />
+    Senha:<input th:field="*{senha}" /> <span th:errors="*{senha}"></span> <br />
+    <input type="submit" value="Cadastra" /> <br />
+</form>
+</body>
+</html>
