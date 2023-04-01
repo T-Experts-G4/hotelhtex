@@ -5,10 +5,13 @@
     <title>Cadastro de usuários</title>
 </head>
 <body>
-<form th:object="${usuarioFormInputDto}" action="/usuario/cadastra" method="post"><br />
-    Nome:<input th:field="*{nome}" /> <span th:errors="*{nome}"></span> <br />
-    Senha:<input th:field="*{senha}" /> <span th:errors="*{senha}"></span> <br />
-    <input type="submit" value="Cadastra" /> <br />
-</form>
+
+    <h2>Cadstro de Usuario</h2>
+    <form th:object="${usuarioFormInputDto}" action="/usuario/cadastra" method="post"><br />
+        Nome:<input th:field="*{nome}" /> <span th:errors="*{nome}"></span> <br /><br />
+        Senha:<input th:field="*{senha}" /> <span th:errors="*{senha}"></span> <br /><br />
+        <input type="submit" value="Cadastra" /> <br /><br />
+        <a th:href="@{/}">Voltar</a>
+    </form>
 </body>
 </html>

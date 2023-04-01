@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Cliente</title>
+</head>
+<body>
+
+    <h2>Cadstro de Cliente</h2>
+    <form th:object="${clienteFormInputDto}" action="/cliente/cadastra" method="post"><br />
+        Nome:<input th:field="*{nome}" /> <span th:errors="*{nome}"></span> <br /><br />
+        CPF:<input th:field="*{cpf}" /> <span th:errors="*{cpf}"></span> <br /><br />
+        Usuario:<input th:field="*{idUsuario}" /> <span th:errors="*{idUsuario}"></span> <br /><br />
+        <input type="submit" value="Cadastra" /> <br /><br />
+        <a th:href="@{/}">Voltar</a>
+    </form>
+</body>
+</html>
