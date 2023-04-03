@@ -6,12 +6,10 @@
     <title>Title</title>
 </head>
 <body>
-    <h2>Lista de Clientes:</h2>
-    <ul>
-        <li th:each="cliente : ${clientes}" th:text="${cliente}"></li>
-    </ul>
+    <h2>Hotel Tex: Cadastro de Clientes</h2>
     <br />
-    <table>
+    <table border=1px>
+        <caption>Lista de Clientes:</caption>
         <thead>
             <tr>
                 <th>Nome</th>
@@ -29,6 +27,6 @@
 
     </table>
     <br />
-    <a th:href="@{/hotel}">Voltar</a>
+    <a th:href="@{/}">Voltar</a>
 </body>
 </html>

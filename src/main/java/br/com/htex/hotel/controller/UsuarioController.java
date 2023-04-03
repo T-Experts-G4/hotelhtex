@@ -2,9 +2,7 @@ package br.com.htex.hotel.controller;
 
 import br.com.htex.hotel.dao.UsuarioDao;
 import br.com.htex.hotel.model.Usuario;
-import br.com.htex.hotel.model.dto.UsuarioDetalheOutputDto;
 import br.com.htex.hotel.model.dto.UsuarioFormInputDto;
-import br.com.htex.hotel.model.dto.UsuarioOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,18 +15,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioController {
     @Autowired
-    private UsuarioDao dao;
+    private UsuarioDao usuarioDao;
+    @GetMapping("/listaUsuarios")
+    public String listaUsuarios(Model model) {
+        model.addAttribute("usuarios", usuarioDao.findAll());
+        return "listaUsuarios";
+    }
+
+
+
     /*
     e /detalhe
      */
-    @GetMapping("/form")
+    @GetMapping("/formUsuario")
     public String form(Model model, UsuarioFormInputDto usuarioFormInputDto){
         model.addAttribute("usuarioFormInputDto",usuarioFormInputDto);
         return "formusuario";
@@ -41,22 +45,14 @@ public class UsuarioController {
             return form(model, usuarioFormInputDto);
         }
         Usuario usuario = usuarioFormInputDto.toUsuario();
-        this.dao.cadastra(usuario);
+        usuarioDao.save(usuario);
         redirectAttributes.addFlashAttribute("sucesso","usuário cadastrado com sucesso!");
-        return "redirect:/usuario/lista";
-    }
-
-    @GetMapping("/lista")
-    public String lista(Model model){
-        List<UsuarioOutputDto> usuariosDto = dao.lista().stream().map(usuario -> new UsuarioOutputDto(usuario)).collect(Collectors.toList());
-        model.addAttribute("usuarios",usuariosDto);
-        return "listaUsuarios";
+        return "redirect:/usuario/listaUsuarios";
     }
 
     @GetMapping("/detalhe")
     public String detalhe(@RequestParam("id") Integer id, Model model){
-
-        model.addAttribute("usuario",new UsuarioDetalheOutputDto(this.dao.buscaPor(id)));
+        model.addAttribute("usuario", usuarioDao.findById(id));
         return "index";
     }
 
