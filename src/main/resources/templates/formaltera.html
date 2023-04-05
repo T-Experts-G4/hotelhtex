@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Alteração</title>
+</head>
+<body>
+  <form action="/usuario/atualiza" method="post">
+    <input type="hidden" name="id" th:value="${usuario.id}" ><br />
+    Nome: <input type="text" name="nome" th:value="${usuario.nome}"><br />
+    Senha: <input type="text" name="senha" th:value="${usuario.senha}"><br />
+    <input type="submit" value="Atualizar">
+  </form>
+  <br />
+  <a th:href="@{/hotel/listaUsuarios}">Voltar</a>
+
+</body>
+</html>

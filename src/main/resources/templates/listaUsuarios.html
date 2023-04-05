@@ -12,16 +12,30 @@
 <!--    </ul>-->
 
     <br />
+        <a th:href="@{/usuario/form}">cadastrar novo usuario</a>
+    <br /><br />
 
     <table>
         <thead>
             <tr>
-                <th>Nome</th>
+                <td>Id</td>
+                <td>Nome</td>
+                <td></td>
+                <td></td>
             </tr>
         </thead>
         <tbody>
             <tr th:each="usuario : ${usuarios}">
+                <td>
+                    <a th:href="@{/usuario/detalhe/{id}(id=${usuario.id})}"th:text="${usuario.id}"></a>
+                </td>
                 <td th:text="${usuario.nome}"></td>
+                <td>
+                    <a th:href="@{/usuario/preAltera(id=${usuario.id})}">Alterar</a>
+                </td>
+                <td>
+                    <a th:href="@{/usuario/deleta(id=${usuario.id})}"> Excluir </a>
+                </td>
             </tr>
         </tbody>
     </table>

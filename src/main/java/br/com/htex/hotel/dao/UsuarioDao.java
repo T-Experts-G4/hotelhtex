@@ -23,4 +23,9 @@ public class UsuarioDao {
     public Usuario buscaPor(Integer id){
         return this.entityManager.find(Usuario.class, id);
     }
+
+    public void deleta(Integer id){
+        Usuario usuario = this.entityManager.find(Usuario.class,id);
+        this.entityManager.remove(usuario);
+    }
 }

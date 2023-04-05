@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhe do Usuario</title>
+</head>
+<body>
+  <h2> Detalhe do usuario:</h2> <br /><br />
+
+  <strong>Nome: </strong><span th:text="${usuario.nome}"></span><br />
+  <strong>Senha: </strong><span th:text="${usuario.senha}"></span>
+  <br />
+
+  <a th:href="@{/usuario/lista}">Voltar</a>
+
+</body>
+</html>
