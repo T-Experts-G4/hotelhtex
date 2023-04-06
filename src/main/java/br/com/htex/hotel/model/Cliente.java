@@ -16,6 +16,9 @@ public class Cliente {
 
     public Cliente() {
     }
+    public Cliente(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     public Cliente(String nome, String cpf, Usuario usuario) {
         this.nome = nome;
@@ -47,5 +50,11 @@ public class Cliente {
                 ", cpf='" + cpf + '\'' +
                 ", usuario=" + usuario +
                 '}';
+    }
+
+    public void Update( String nome, String cpf, Usuario usuario){
+        this.nome = nome;
+        this.cpf = cpf;
+        this.usuario = usuario;
     }
 }
