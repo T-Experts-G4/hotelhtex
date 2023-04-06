@@ -15,13 +15,15 @@
                 <th>Nome</th>
                 <th>CPF</th>
                 <th>Usuario</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="cliente : ${clientes}">
                 <td th:text="${cliente.nome}"></td>
                 <td th:text="${cliente.cpf}"></td>
-                <td th:text="${cliente.usuario.nome}"></td>
+                <td th:text="${cliente.nomeUsuario}"></td>
+                <td><a th:href="@{/cliente/deleta/{id}(id=${cliente.id})}">Excluir</a></td>
             </tr>
         </tbody>
 
