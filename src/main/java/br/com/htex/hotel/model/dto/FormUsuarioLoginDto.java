@@ -1,3 +1,3 @@
 package br.com.htex.hotel.model.dto;
 
-public record FormUsuarioLoginDto(String nome, String senha) {}
+public record FormUsuarioLoginDto(String email, String senha) {}

@@ -1,18 +1,17 @@
 package br.com.htex.hotel.controller;
 
-import br.com.htex.hotel.dao.ClienteDao;
-import br.com.htex.hotel.model.Cliente;
 import br.com.htex.hotel.model.Usuario;
-import br.com.htex.hotel.model.dto.ClienteOutputDto;
 import br.com.htex.hotel.model.dto.ClienteDto;
+import br.com.htex.hotel.model.dto.ClienteOutputDto;
 import br.com.htex.hotel.services.ClienteService;
 import br.com.htex.hotel.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -29,44 +28,26 @@ public class ClienteController {
     UsuarioService usuarioService;
 
     @GetMapping("/listaClientes")
-    public String listaClientes(Model model) {
-        List<ClienteOutputDto> clienteOutputDto = this.clienteService.listaClientes();
-        model.addAttribute("clientes", clienteOutputDto);
-        return "listaClientes";
-
-    }
-
-    @GetMapping("/formCliente")
-    public String form(Model model, ClienteDto clienteFormInputDto){
-        model.addAttribute(clienteFormInputDto);
-        return "formcliente";
+    public ResponseEntity<List<ClienteOutputDto>> listaClientes() {
+        List<ClienteOutputDto> clientesOutputDto = this.clienteService.listaClientes();
+        return ResponseEntity.status(200).body(clientesOutputDto);
     }
 
     @Transactional
     @PostMapping("/cadastra")
-    public String cadastra(
-            @Valid ClienteDto clienteDto,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
-            Model model
-    ){
-        if(bindingResult.hasErrors()){
-            bindingResult.getFieldErrors().forEach(campoErro -> System.out.println(campoErro.getDefaultMessage()));
-            return form(model, clienteDto.toCliente());
+    public ResponseEntity<String> cadastra(
+            @Valid @RequestBody ClienteDto clienteDto
+    ) throws Exception {
+        try {
+            Optional<Usuario> usuario = this.usuarioService.findById(clienteDto.idUsuario());
+            usuario.orElseThrow(() -> new Exception("Usuário não encontrado"));
+
+            usuario.ifPresent(value -> this.clienteService.cadastrarCliente(clienteDto, value));
+
+            return ResponseEntity.status(200).body("Cliente cadastrado com sucesso!");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
-
-        Optional<Usuario> usuario = this.usuarioService.findById(clienteDto.idUsuario());
-
-        usuario.ifPresent(value -> this.clienteService.cadastrarCliente(clienteDto, value));
-
-        redirectAttributes.addFlashAttribute("sucesso","cliente cadastrado com sucesso!");
-
-        return "redirect:/usuario/" + clienteDto.idUsuario();
-    }
-
-    @GetMapping("/deleta/{id}")
-    public String deleta(@PathVariable Integer id) {
-        this.clienteService.deleta(id);
-        return "redirect:/cliente/listaClientes";
     }
 }

@@ -10,12 +10,4 @@ public record ClienteDto(
         String cpf,
         @NotNull(message = "O campo precisa ser preenchido")
         Integer idUsuario
-) {
-    public ClienteDto toCliente(){
-        return new ClienteDto(
-                this.nome,
-                this.cpf,
-                this.idUsuario
-        );
-    }
-}
+) {}

@@ -1,11 +1,14 @@
 package br.com.htex.hotel.model.dto;
 
 import br.com.htex.hotel.model.Cliente;
+import br.com.htex.hotel.model.Endereco;
 
 public record ClienteOutputDto(
         Integer id,
         String nome,
         String cpf,
+        String telefone,
+        Endereco endereco,
         String nomeUsuario
 ) {
 
@@ -14,7 +17,9 @@ public record ClienteOutputDto(
                 cliente.getId(),
                 cliente.getNome(),
                 cliente.getCpf(),
-                cliente.getUsuario().getNome()
+                cliente.getTelefone(),
+                cliente.getEndereco(),
+                cliente.getUsuario().getEmail()
         );
     }
 }

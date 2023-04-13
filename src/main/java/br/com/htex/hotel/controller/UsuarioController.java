@@ -1,79 +1,68 @@
 package br.com.htex.hotel.controller;
 
-import br.com.htex.hotel.dao.ClienteDao;
-import br.com.htex.hotel.dao.UsuarioDao;
 import br.com.htex.hotel.model.Cliente;
 import br.com.htex.hotel.model.Usuario;
+import br.com.htex.hotel.model.dto.UsuarioClienteDto;
+import br.com.htex.hotel.model.dto.UsuarioDto;
 import br.com.htex.hotel.model.dto.UsuarioFormInputDto;
+import br.com.htex.hotel.services.ClienteService;
+import br.com.htex.hotel.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioController {
-    @Autowired
-    private UsuarioDao usuarioDao;
 
     @Autowired
-    private ClienteDao clienteDao;
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @GetMapping("/listaUsuarios")
-    public String listaUsuarios(Model model) {
-        model.addAttribute("usuarios", usuarioDao.findAll());
-        return "listaUsuarios";
+    public ResponseEntity<List<UsuarioDto>> listaUsuarios() {
+        List<UsuarioDto> listaUsuariosDto = this.usuarioService.listaUsuariosDto();
+
+        return ResponseEntity.status(200).body(listaUsuariosDto);
     }
 
     @GetMapping("/{id}")
-    public String mostrarUsuario(
-            @PathVariable Integer id,
-            Model model
-    ){
+    public ResponseEntity<?> mostrarUsuario(
+            @PathVariable Integer id
+    ) throws Exception {
         try {
-            Usuario usuario = usuarioDao.findById(id).get();
+            Optional<Usuario> usuario = this.usuarioService.findById(id);
+            usuario.orElseThrow(() -> new Exception("Usuário não encontrado"));
 
-            Cliente cliente = this.clienteDao.findByUsuario(usuario);
-            if (cliente == null){
-                cliente = new Cliente(usuario);
-            }
+            Optional<Cliente> cliente = this.clienteService.findByUsuario(usuario.get());
 
-            model.addAttribute("cliente", cliente);
-            return "usuario/detalheUsuario";
+            UsuarioClienteDto usuarioClienteDto = new UsuarioClienteDto(
+                    cliente.orElse(new Cliente(usuario.get()))
+            );
+
+            return ResponseEntity.status(200).body(usuarioClienteDto);
         } catch (Exception e){
-            return "redirect:/login";
+            return ResponseEntity.status(404).body(e.getMessage());
         }
-    }
-
-    @GetMapping("/formUsuario")
-    public String form(Model model, UsuarioFormInputDto usuarioFormInputDto){
-        model.addAttribute("usuarioFormInputDto",usuarioFormInputDto);
-        return "formusuario";
     }
 
     @Transactional
     @PostMapping("/cadastra")
-    public String cadastra(
-            @Valid UsuarioFormInputDto usuarioFormInputDto,
-            BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
-            Model model
+    public ResponseEntity<UsuarioDto> cadastra(
+            @Valid @RequestBody UsuarioFormInputDto usuarioFormInputDto
     ){
-        if(bindingResult.hasErrors()){
-            bindingResult.getFieldErrors().forEach(campoErro -> System.out.println(campoErro.getDefaultMessage()));
-            return form(model, usuarioFormInputDto);
-        }
+        Usuario usuario = new Usuario(usuarioFormInputDto);
 
-        Usuario usuario = usuarioFormInputDto.toUsuario();
+        UsuarioDto usuarioDto = new UsuarioDto(this.usuarioService.save(usuario));
 
-        usuarioDao.save(usuario);
-        redirectAttributes.addFlashAttribute("sucesso","usuário cadastrado com sucesso!");
-        return "redirect:/usuario/listaUsuarios";
+        return ResponseEntity.status(201).body(usuarioDto);
     }
 }
