@@ -5,7 +5,7 @@
     <title>Cadastro de Cliente</title>
 </head>
 <body>
-
+    <h2>Thymeleaf - Não USAR</h2>
     <h2>Cadstro de Cliente</h2>
     <form th:object="${clienteFormInputDto}" action="/cliente/cadastra" method="post"><br />
         Nome:<input th:field="*{nome}" /> <span th:errors="*{nome}"></span> <br /><br />

@@ -4,8 +4,10 @@ import br.com.htex.hotel.model.Usuario;
 import br.com.htex.hotel.model.dto.FormUsuarioLoginDto;
 import br.com.htex.hotel.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -15,22 +17,15 @@ public class LoginController {
     @Autowired
     UsuarioService usuarioService;
 
-    @RequestMapping("/login")
-    public String login(){
-        return "login/login";
-    }
-
-    @RequestMapping("/login/auth")
-    public String auth(
-            FormUsuarioLoginDto formUsuarioLogin,
-            Model model
+    @PostMapping("/login")
+    public ResponseEntity<?> login(
+            @RequestBody FormUsuarioLoginDto formUsuarioLogin
     ){
-        Usuario usuario = this.usuarioService.autentica(formUsuarioLogin);
-        if (usuario == null){
-            return "redirect:/login";
+        try {
+            Usuario usuario = this.usuarioService.autentica(formUsuarioLogin);
+            return ResponseEntity.ok(usuario);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        model.addAttribute("usuario", usuario);
-        return "redirect:/usuario/" + usuario.getId();
     }
 }
