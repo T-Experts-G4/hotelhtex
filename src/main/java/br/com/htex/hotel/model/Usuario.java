@@ -12,12 +12,15 @@ public class Usuario {
     private Integer id;
     private String email;
     private String senha;
-    public Usuario(){}
+    private String usuarioRole;
 
-    public Usuario(Integer id, String email, String senha) {
-        this.id = id;
+    public Usuario() {
+    }
+
+    public Usuario(String email, String senha, String usuarioRole) {
         this.email = email;
         this.senha = senha;
+        this.usuarioRole = usuarioRole;
     }
 
     public Usuario(String email, String senha) {
@@ -33,10 +36,16 @@ public class Usuario {
     public Integer getId() {
         return id;
     }
+
     public String getEmail() {
         return email;
     }
+
     public String getSenha() {
         return senha;
+    }
+
+    public String getUsuarioRole() {
+        return usuarioRole;
     }
 }

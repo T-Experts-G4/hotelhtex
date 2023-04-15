@@ -6,13 +6,14 @@ import br.com.htex.hotel.model.Endereco;
 import br.com.htex.hotel.model.Usuario;
 import br.com.htex.hotel.model.dto.ClienteDto;
 import br.com.htex.hotel.model.dto.ClienteOutputDto;
+import br.com.htex.hotel.model.dto.FuncionarioDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class ClienteService {
@@ -20,12 +21,24 @@ public class ClienteService {
     @Autowired
     ClienteDao clienteDao;
 
-    public List<ClienteOutputDto> listaClientes() {
-        return this.clienteDao.findAll().stream().map(ClienteOutputDto::new).toList();
+    @Autowired
+    EnderecoServico enderecoServico;
+
+    public List<ClienteOutputDto> listaClientes(Usuario usuario) {
+
+        if(usuario.getUsuarioRole().equals("ADMIN")){
+            return this.clienteDao.findAllByCliente().stream().map(ClienteOutputDto::new).toList();
+        }
+
+        throw new RuntimeException("Acesso negado");
     }
 
     public Optional<Cliente> findByUsuario(Usuario usuario){
         return this.clienteDao.findByUsuario(usuario);
+    }
+
+    public Cliente findById(Integer id){
+        return this.clienteDao.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
     }
 
     public void save(Cliente cliente){
@@ -34,41 +47,34 @@ public class ClienteService {
 
     public void cadastrarCliente(@Valid ClienteDto clienteDto, Usuario usuario){
         Optional<Cliente> cliente = this.findByUsuario(usuario);
-
-//            cliente = Optional.of(new Cliente(
-//                    clienteDto.email(),
-//                    clienteDto.cpf(),
-//                    usuario
-//            ));
-
-//        cliente.ifPresentOrElse(
-//                value -> value.Update(
-//                        clienteDto.email(),
-//                        clienteDto.cpf(),
-//                        usuario
-//                ),
-//                () -> new Cliente(
-//                        clienteDto.email(),
-//                        clienteDto.cpf(),
-//                        usuario
-//                )
-//        );
+        Endereco endereco = new Endereco(
+                clienteDto.endereco().getCep(),
+                clienteDto.endereco().getLogradouro(),
+                clienteDto.endereco().getComplemento(),
+                clienteDto.endereco().getBairro(),
+                clienteDto.endereco().getLocalidade(),
+                clienteDto.endereco().getUf()
+        );
 
         if(cliente.isEmpty()){
             cliente = Optional.of(new Cliente(
                     clienteDto.nome(),
                     clienteDto.cpf(),
-                    "35345345435",
-                    new Endereco(),
+                    clienteDto.telefone(),
+                    endereco,
                     usuario
             ));
         } else {
             cliente.get().Update(
                     clienteDto.nome(),
                     clienteDto.cpf(),
-                    usuario
+                    usuario,
+                    clienteDto.telefone(),
+                    endereco
             );
         }
+
+        this.enderecoServico.save(endereco);
         this.clienteDao.save(cliente.get());
     }
 }

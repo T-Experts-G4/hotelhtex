@@ -39,13 +39,12 @@ public class UsuarioController {
             @PathVariable Integer id
     ) throws Exception {
         try {
-            Optional<Usuario> usuario = this.usuarioService.findById(id);
-            usuario.orElseThrow(() -> new Exception("Usuário não encontrado"));
+            Usuario usuario = this.usuarioService.findById(id);
 
-            Optional<Cliente> cliente = this.clienteService.findByUsuario(usuario.get());
+            Optional<Cliente> cliente = this.clienteService.findByUsuario(usuario);
 
             UsuarioClienteDto usuarioClienteDto = new UsuarioClienteDto(
-                    cliente.orElse(new Cliente(usuario.get()))
+                    cliente.orElse(new Cliente(usuario))
             );
 
             return ResponseEntity.status(200).body(usuarioClienteDto);
@@ -59,9 +58,9 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDto> cadastra(
             @Valid @RequestBody UsuarioFormInputDto usuarioFormInputDto
     ){
-        Usuario usuario = new Usuario(usuarioFormInputDto);
+        Usuario usuario = this.usuarioService.save(usuarioFormInputDto);
 
-        UsuarioDto usuarioDto = new UsuarioDto(this.usuarioService.save(usuario));
+        UsuarioDto usuarioDto = new UsuarioDto(usuario);
 
         return ResponseEntity.status(201).body(usuarioDto);
     }

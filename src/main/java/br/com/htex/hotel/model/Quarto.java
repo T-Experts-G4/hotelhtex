@@ -10,6 +10,9 @@ public class Quarto {
     private Integer id;
     private Integer numero;
     private BigDecimal preco;
+
+
+
     private Boolean disponivel;
     @ManyToOne
     private Hotel hotel;
@@ -38,8 +41,14 @@ public class Quarto {
     public Boolean getDisponivel() {
         return disponivel;
     }
+    public void setDisponivel(Boolean disponivel) {
+        this.disponivel = disponivel;
+    }
+
 
     public Hotel getHotel() {
         return hotel;
     }
+
+
 }

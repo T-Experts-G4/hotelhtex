@@ -1,10 +1,8 @@
 package br.com.htex.hotel.model;
 
-import br.com.htex.hotel.model.dto.Funcionario;
-import br.com.htex.hotel.model.dto.Servico;
+import br.com.htex.hotel.model.dto.reserva.ReservaDto;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,31 +11,46 @@ public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private LocalDate data;
+    private final LocalDate data = LocalDate.now();
     private LocalDate checkin;
     private LocalDate checkout;
-    private Boolean status;
-    @OneToOne
-    private Hotel hotel;
-    @OneToMany
+    private Boolean statusPago = false;
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Quarto> quarto;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Servico> servico;
     @OneToOne
     private Cliente cliente;
     @OneToOne
     private Funcionario funcionario;
 
-    public Reserva(LocalDate data, LocalDate checkin, LocalDate checkout, Boolean status, Hotel hotel, List<Quarto> quarto, List<Servico> servico, Cliente cliente, Funcionario funcionario) {
-        this.data = data;
+    public Reserva() { }
+    public Reserva(
+            LocalDate checkin,
+            LocalDate checkout,
+            Boolean status,
+            List<Quarto> quarto,
+            List<Servico> servico,
+            Cliente cliente,
+            Funcionario funcionario
+    ) {
         this.checkin = checkin;
         this.checkout = checkout;
-        this.status = status;
-        this.hotel = hotel;
+        this.statusPago = status;
         this.quarto = quarto;
         this.servico = servico;
         this.cliente = cliente;
         this.funcionario = funcionario;
+    }
+
+    public Reserva(ReservaDto reservaDto) {
+        this.checkin = reservaDto.checkin();
+        this.checkout = reservaDto.checkout();
+        this.statusPago = reservaDto.status();
+        this.quarto = reservaDto.quarto();
+        this.servico = reservaDto.servico();
+        this.cliente = reservaDto.cliente();
+        this.funcionario = reservaDto.funcionario();
     }
 
     public Integer getId() {
@@ -57,11 +70,7 @@ public class Reserva {
     }
 
     public Boolean getStatus() {
-        return status;
-    }
-
-    public Hotel getHotel() {
-        return hotel;
+        return statusPago;
     }
 
     public List<Quarto> getQuarto() {

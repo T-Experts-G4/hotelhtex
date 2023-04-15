@@ -1,10 +1,10 @@
-package br.com.htex.hotel.model.dto;
+package br.com.htex.hotel.model;
 
 import br.com.htex.hotel.model.Usuario;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "funcionarios")
 public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +14,9 @@ public class Funcionario {
     private String cargo;
     @OneToOne
     private Usuario usuario;
+
+    public Funcionario() {
+    }
 
     public Funcionario(String nome, Long matricula, String cargo, Usuario usuario) {
         this.nome = nome;
