@@ -1,6 +1,7 @@
 package br.com.htex.hotel.model.dto;
 
 import br.com.htex.hotel.model.Cliente;
+import br.com.htex.hotel.model.dto.usuario.UsuarioDto;
 
 public record UsuarioClienteDto(
         Integer id,

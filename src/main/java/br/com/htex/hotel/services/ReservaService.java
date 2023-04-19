@@ -1,7 +1,9 @@
 package br.com.htex.hotel.services;
 
+
 import br.com.htex.hotel.dao.ReservaDao;
 import br.com.htex.hotel.model.*;
+import br.com.htex.hotel.model.dto.reserva.ReservaCancelarDto;
 import br.com.htex.hotel.model.dto.reserva.ReservaDto;
 import br.com.htex.hotel.model.dto.reserva.ReservaFormDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +51,34 @@ public class ReservaService {
                 funcionario
         );
 
-        List<Quarto> quartosOcupados = quartos.stream().map(quarto -> {
-            quarto.setDisponivel(false);
-            return quarto;
-        }).toList();
+        List<Quarto> quartosOcupados = quartos.stream().peek(
+                quarto -> quarto.setDisponivel(false)
+        ).toList();
 
         this.quartoService.saveAll(quartosOcupados);
 
         this.reservaDao.save(new Reserva(reservaDto));
+    }
+
+    public void cancelarReserva(ReservaCancelarDto reservaCancelarDto) {
+
+        Reserva reserva = this.reservaDao.findById(
+                reservaCancelarDto.idReserva()
+        ).orElseThrow(
+                () -> new RuntimeException("Reserva não encontrada")
+        );
+
+        List<Quarto> quartosDisponiveis = reserva.getQuarto().stream().peek(
+                quarto -> quarto.setDisponivel(true)
+        ).toList();
+
+        reserva.setCancelada();
+
+        this.quartoService.saveAll(quartosDisponiveis);
+        this.reservaDao.save(reserva);
+    }
+
+    public List<Reserva> listaReservasUsuario(Integer id){
+        return this.reservaDao.findByUsuario(id);
     }
 }

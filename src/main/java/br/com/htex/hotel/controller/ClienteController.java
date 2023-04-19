@@ -4,6 +4,7 @@ import br.com.htex.hotel.model.Usuario;
 import br.com.htex.hotel.model.dto.ClienteDto;
 import br.com.htex.hotel.model.dto.ClienteOutputDto;
 import br.com.htex.hotel.model.dto.FuncionarioDto;
+import br.com.htex.hotel.model.dto.usuario.UsuarioAdmin;
 import br.com.htex.hotel.services.ClienteService;
 import br.com.htex.hotel.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,10 @@ public class ClienteController {
 
     @GetMapping("/listaClientes")
     public ResponseEntity<?> listaClientes(
-            @RequestBody ClienteDto clienteDto
+            @RequestBody UsuarioAdmin usuarioAdmin
     ) {
         try {
-            Usuario usuario = this.usuarioService.findById(clienteDto.idUsuario());
+            Usuario usuario = this.usuarioService.findById(usuarioAdmin.idUsuario());
 
             List<ClienteOutputDto> clientesOutputDto = this.clienteService.listaClientes(usuario);
 
@@ -42,7 +43,6 @@ public class ClienteController {
         } catch (Exception e) {
             return ResponseEntity.status(403).body(e.getMessage());
         }
-
     }
 
     @Transactional
@@ -52,9 +52,7 @@ public class ClienteController {
             @Valid @RequestBody ClienteDto clienteDto
     ) throws Exception {
         try {
-            Usuario usuario = this.usuarioService.findById(clienteDto.idUsuario());
-
-            this.clienteService.cadastrarCliente(clienteDto, usuario);
+            this.clienteService.cadastrarCliente(clienteDto);
 
             return ResponseEntity.status(200).body("Cliente cadastrado com sucesso!");
 

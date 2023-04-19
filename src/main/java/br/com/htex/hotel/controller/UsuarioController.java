@@ -3,8 +3,7 @@ package br.com.htex.hotel.controller;
 import br.com.htex.hotel.model.Cliente;
 import br.com.htex.hotel.model.Usuario;
 import br.com.htex.hotel.model.dto.UsuarioClienteDto;
-import br.com.htex.hotel.model.dto.UsuarioDto;
-import br.com.htex.hotel.model.dto.UsuarioFormInputDto;
+import br.com.htex.hotel.model.dto.usuario.UsuarioDto;
 import br.com.htex.hotel.services.ClienteService;
 import br.com.htex.hotel.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,20 +45,8 @@ public class UsuarioController {
             );
 
             return ResponseEntity.status(200).body(usuarioClienteDto);
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
-    }
-
-    @Transactional
-    @PostMapping("/cadastra")
-    public ResponseEntity<UsuarioDto> cadastra(
-            @Valid @RequestBody UsuarioFormInputDto usuarioFormInputDto
-    ){
-        Usuario usuario = this.usuarioService.save(usuarioFormInputDto);
-
-        UsuarioDto usuarioDto = new UsuarioDto(usuario);
-
-        return ResponseEntity.status(201).body(usuarioDto);
     }
 }

@@ -1,6 +1,6 @@
 package br.com.htex.hotel.model;
 
-import br.com.htex.hotel.model.dto.UsuarioFormInputDto;
+import br.com.htex.hotel.model.dto.usuario.UsuarioFormInputDto;
 
 import javax.persistence.*;
 

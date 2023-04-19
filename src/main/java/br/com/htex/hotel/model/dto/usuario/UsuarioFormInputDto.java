@@ -1,4 +1,4 @@
-package br.com.htex.hotel.model.dto;
+package br.com.htex.hotel.model.dto.usuario;
 
 import javax.validation.constraints.NotBlank;
 

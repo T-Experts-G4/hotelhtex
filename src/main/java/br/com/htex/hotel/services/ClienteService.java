@@ -6,13 +6,11 @@ import br.com.htex.hotel.model.Endereco;
 import br.com.htex.hotel.model.Usuario;
 import br.com.htex.hotel.model.dto.ClienteDto;
 import br.com.htex.hotel.model.dto.ClienteOutputDto;
-import br.com.htex.hotel.model.dto.FuncionarioDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,6 +21,9 @@ public class ClienteService {
 
     @Autowired
     EnderecoServico enderecoServico;
+
+    @Autowired
+    UsuarioService usuarioService;
 
     public List<ClienteOutputDto> listaClientes(Usuario usuario) {
 
@@ -45,8 +46,12 @@ public class ClienteService {
         this.clienteDao.save(cliente);
     }
 
-    public void cadastrarCliente(@Valid ClienteDto clienteDto, Usuario usuario){
-        Optional<Cliente> cliente = this.findByUsuario(usuario);
+    public void cadastrarCliente(@Valid ClienteDto clienteDto){
+        Usuario usuario = new Usuario(
+                clienteDto.usuario().getEmail(),
+                clienteDto.usuario().getSenha()
+        );
+
         Endereco endereco = new Endereco(
                 clienteDto.endereco().getCep(),
                 clienteDto.endereco().getLogradouro(),
@@ -56,25 +61,16 @@ public class ClienteService {
                 clienteDto.endereco().getUf()
         );
 
-        if(cliente.isEmpty()){
-            cliente = Optional.of(new Cliente(
-                    clienteDto.nome(),
-                    clienteDto.cpf(),
-                    clienteDto.telefone(),
-                    endereco,
-                    usuario
-            ));
-        } else {
-            cliente.get().Update(
-                    clienteDto.nome(),
-                    clienteDto.cpf(),
-                    usuario,
-                    clienteDto.telefone(),
-                    endereco
-            );
-        }
+        Cliente cliente = new Cliente(
+                clienteDto.nome(),
+                clienteDto.cpf(),
+                clienteDto.telefone(),
+                endereco,
+                usuario
+        );
 
+        this.usuarioService.save(usuario);
         this.enderecoServico.save(endereco);
-        this.clienteDao.save(cliente.get());
+        this.clienteDao.save(cliente);
     }
 }

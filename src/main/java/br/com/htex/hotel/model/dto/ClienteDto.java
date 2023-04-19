@@ -1,6 +1,7 @@
 package br.com.htex.hotel.model.dto;
 
 import br.com.htex.hotel.model.Endereco;
+import br.com.htex.hotel.model.Usuario;
 
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
@@ -16,6 +17,6 @@ public record ClienteDto(
         @NotNull(message = "O campo precisa ser preenchido")
         Endereco endereco,
         @NotNull(message = "O campo precisa ser preenchido")
-        Integer idUsuario
+        Usuario usuario
 
 ) {}

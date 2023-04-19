@@ -24,6 +24,8 @@ public class Reserva {
     @OneToOne
     private Funcionario funcionario;
 
+    private Boolean cancelada = false;
+
     public Reserva() { }
     public Reserva(
             LocalDate checkin,
@@ -87,5 +89,13 @@ public class Reserva {
 
     public Funcionario getFuncionario() {
         return funcionario;
+    }
+
+    public Boolean getCancelada() {
+        return cancelada;
+    }
+
+    public void setCancelada() {
+        this.cancelada = true;
     }
 }

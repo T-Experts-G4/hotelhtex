@@ -33,4 +33,5 @@ public class Servico {
     public BigDecimal getPreco() {
         return preco;
     }
+
 }

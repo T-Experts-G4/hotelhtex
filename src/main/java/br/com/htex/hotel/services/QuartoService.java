@@ -1,5 +1,4 @@
 package br.com.htex.hotel.services;
-
 import br.com.htex.hotel.dao.QuartoDao;
 import br.com.htex.hotel.model.Quarto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,10 @@ public class QuartoService {
         return this.quartoDao.findAll().stream().filter(
                 quarto -> ids.contains(quarto.getId())
         ).toList();
+    }
+
+    public List<Quarto> listaQuartosDisponivelHotel(Integer id){
+        return this.quartoDao.listaQuartosDisponivelHotel(id);
     }
 
     public void saveAll(List<Quarto> quartosOcupados) {
