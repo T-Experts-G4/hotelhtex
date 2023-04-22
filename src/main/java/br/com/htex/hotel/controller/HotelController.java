@@ -1,6 +1,8 @@
 package br.com.htex.hotel.controller;
 
+
 import br.com.htex.hotel.services.HotelService;
+import br.com.htex.hotel.services.QuartoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,12 +18,26 @@ public class HotelController {
     @Autowired
     HotelService hotelService;
 
+    @Autowired
+    QuartoService quartoService;
+
     @GetMapping("/{id}")
     public ResponseEntity<?> listaHoteis(
             @PathVariable Integer id
     ){
         try {
             return ResponseEntity.ok(this.hotelService.listaHotel(id));
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("{id}/listaQuartosDisponiveis")
+    public ResponseEntity<?> listaQuartosDisponiveis(
+            @PathVariable Integer id
+    ){
+        try {
+            return ResponseEntity.ok(this.quartoService.listaQuartosDisponivelHotel(id));
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

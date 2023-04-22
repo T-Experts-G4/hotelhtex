@@ -37,7 +37,7 @@ public class ReservaService {
 
         List<Quarto> quartos = this.quartoService.BuscarQuartosReserva(reservaFormDto.quartos());
 
-        List<Servico> servicos = this.servicoService.BuscarServicos(reservaFormDto.servicos());
+        List<Servico> servicos = this.servicoService.buscarServicos(reservaFormDto.servicos());
 
         Funcionario funcionario = this.funcionarioService.BuscaFuncionarioBy(reservaFormDto.idFuncionario());
 

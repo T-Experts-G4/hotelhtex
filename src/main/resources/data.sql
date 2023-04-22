@@ -44,6 +44,12 @@ INSERT INTO QUARTOS (disponivel, numero, preco, hotel_id)
 INSERT INTO QUARTOS (disponivel, numero, preco, hotel_id)
     VALUES(true, 3, 300, 1);
 
-INSERT INTO SERVICOS (nome, preco)
-    VALUES('SEM SERVICO', 0);
+INSERT INTO SERVICOS (nome, preco) VALUES('SEM SERVICO', 0);
+INSERT INTO SERVICOS (nome, preco) VALUES('Almoco', 70.0);
+INSERT INTO SERVICOS (nome, preco) VALUES('Janta', 50.0);
+INSERT INTO SERVICOS (nome, preco) VALUES('Massagem', 80.0);
+INSERT INTO SERVICOS (nome, preco) VALUES('ALUGUEL DE EQUIPAMENTOS', 50.0);
+INSERT INTO SERVICOS (nome, preco) VALUES('INTERPRETE', 150.0);
+INSERT INTO SERVICOS (nome, preco) VALUES('TRASLADO', 50.0);
+
 

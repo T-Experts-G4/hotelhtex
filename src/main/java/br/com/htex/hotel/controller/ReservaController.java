@@ -1,4 +1,5 @@
 package br.com.htex.hotel.controller;
+
 import br.com.htex.hotel.model.dto.reserva.ReservaCancelarDto;
 import br.com.htex.hotel.model.dto.reserva.ReservaFormDto;
 import br.com.htex.hotel.services.ReservaService;
@@ -17,7 +18,7 @@ public class ReservaController {
     @PostMapping("/cadastra")
     public ResponseEntity<String> cadastraReserva(
             @RequestBody ReservaFormDto reservaFormDto
-    ){
+    ) {
         try {
             this.reservaService.cadastraReserva(reservaFormDto);
             return ResponseEntity.status(200).body("Reserva cadastrada com sucesso!");
@@ -27,7 +28,7 @@ public class ReservaController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<?> listarReservas(){
+    public ResponseEntity<?> listarReservas() {
         try {
             return ResponseEntity.status(200).body(this.reservaService.listarReservas());
         } catch (Exception e) {
@@ -38,21 +39,10 @@ public class ReservaController {
     @DeleteMapping("/cancelar")
     public ResponseEntity<String> cancelarReserva(
             @RequestBody ReservaCancelarDto reservaCancelarDto
-    ){
+    ) {
         try {
             this.reservaService.cancelarReserva(reservaCancelarDto);
             return ResponseEntity.status(200).body("Reserva cancelada com sucesso!");
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/listar/usuario/{id}")
-    public ResponseEntity<?> listarReservasUsuario(
-            @PathVariable Integer id
-    ){
-        try {
-            return ResponseEntity.status(200).body(this.reservaService.listaReservasUsuario(id));
         } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

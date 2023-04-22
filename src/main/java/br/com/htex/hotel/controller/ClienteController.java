@@ -1,25 +1,21 @@
 package br.com.htex.hotel.controller;
-
 import br.com.htex.hotel.model.Usuario;
 import br.com.htex.hotel.model.dto.ClienteDto;
 import br.com.htex.hotel.model.dto.ClienteOutputDto;
 import br.com.htex.hotel.model.dto.FuncionarioDto;
 import br.com.htex.hotel.model.dto.usuario.UsuarioAdmin;
 import br.com.htex.hotel.services.ClienteService;
+import br.com.htex.hotel.services.ReservaService;
 import br.com.htex.hotel.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Transient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/cliente")
@@ -29,6 +25,9 @@ public class ClienteController {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    ReservaService reservaService;
 
     @GetMapping("/listaClientes")
     public ResponseEntity<?> listaClientes(
@@ -56,6 +55,17 @@ public class ClienteController {
 
             return ResponseEntity.status(200).body("Cliente cadastrado com sucesso!");
 
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/listaReservas/{id}")
+    public ResponseEntity<?> listaReservas(
+            @PathVariable Integer id
+    ){
+        try {
+            return ResponseEntity.status(200).body(this.reservaService.listaReservasUsuario(id));
         } catch (Exception e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

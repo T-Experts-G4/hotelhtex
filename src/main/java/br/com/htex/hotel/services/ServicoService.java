@@ -12,9 +12,13 @@ public class ServicoService {
     @Autowired
     ServicoDao servicoDao;
 
-    public List<Servico> BuscarServicos(List<Integer> ids){
+    public List<Servico> buscarServicos(List<Integer> ids){
         return this.servicoDao.findAll().stream().filter(
                 servico -> ids.contains(servico.getId())
         ).toList();
+    }
+
+    public List<Servico> buscarServicos(){
+        return this.servicoDao.findByServicos();
     }
 }
