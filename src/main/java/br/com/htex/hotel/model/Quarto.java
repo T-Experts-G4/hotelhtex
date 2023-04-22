@@ -9,18 +9,17 @@ public class Quarto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer numero;
+    private String nome;
     private BigDecimal preco;
-
-
-
     private Boolean disponivel;
     @ManyToOne
     private Hotel hotel;
 
     public Quarto() { }
 
-    public Quarto(Integer numero, BigDecimal preco, Boolean disponivel, Hotel hotel) {
+    public Quarto(Integer numero, String nome, BigDecimal preco, Boolean disponivel, Hotel hotel) {
         this.numero = numero;
+        this.nome = nome;
         this.preco = preco;
         this.disponivel = disponivel;
         this.hotel = hotel;
@@ -33,11 +32,10 @@ public class Quarto {
     public Integer getNumero() {
         return numero;
     }
-
+    public String getNome() { return nome; }
     public BigDecimal getPreco() {
         return preco;
     }
-
     public Boolean getDisponivel() {
         return disponivel;
     }

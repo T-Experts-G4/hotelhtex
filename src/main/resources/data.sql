@@ -35,14 +35,12 @@ INSERT INTO ENDERECOS (cep, logradouro, complemento, bairro, localidade, uf)
 INSERT INTO HOTEIS (cnpj, nome, telefone, endereco_id)
     VALUES('0992828822/002', 'Hotel Tex', '333-33333', 6);
 
-INSERT INTO QUARTOS (disponivel, numero, preco, hotel_id)
-    VALUES(true, 1, 100, 1);
-
-INSERT INTO QUARTOS (disponivel, numero, preco, hotel_id)
-    VALUES(true, 2, 200, 1);
-
-INSERT INTO QUARTOS (disponivel, numero, preco, hotel_id)
-    VALUES(true, 3, 300, 1);
+INSERT INTO QUARTOS (disponivel, numero, nome, preco, hotel_id)
+    VALUES(true, 1, 'Standard', 100, 1);
+INSERT INTO QUARTOS (disponivel, numero, nome, preco, hotel_id)
+    VALUES(true, 2, 'Master', 200, 1);
+INSERT INTO QUARTOS (disponivel, numero, nome, preco, hotel_id)
+    VALUES(true, 3, 'Deluxe', 300, 1);
 
 INSERT INTO SERVICOS (nome, preco) VALUES('SEM SERVICO', 0);
 INSERT INTO SERVICOS (nome, preco) VALUES('Almoco', 70.0);

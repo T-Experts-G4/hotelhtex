@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 public record QuartoDto(
         Integer id,
         Integer numero,
+        String nome,
         BigDecimal preco,
         Boolean disponivel,
         Integer idHotel
@@ -14,6 +15,7 @@ public record QuartoDto(
         this(
                 quarto.getId(),
                 quarto.getNumero(),
+                quarto.getNome(),
                 quarto.getPreco(),
                 quarto.getDisponivel(),
                 quarto.getHotel().getId());
