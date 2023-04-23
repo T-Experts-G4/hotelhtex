@@ -1,6 +1,7 @@
 package br.com.htex.hotel.model;
 
 import br.com.htex.hotel.model.dto.usuario.UsuarioFormInputDto;
+import br.com.htex.hotel.services.UsuarioRoles;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ public class Usuario {
     private Integer id;
     private String email;
     private String senha;
-    private String usuarioRole;
+    private String usuarioRole = UsuarioRoles.USUARIO.getRole();
 
     public Usuario() {
     }

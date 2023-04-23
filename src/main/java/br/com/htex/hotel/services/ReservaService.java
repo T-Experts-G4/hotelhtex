@@ -47,7 +47,7 @@ public class ReservaService {
                 reservaFormDto.status(),
                 quartos,
                 servicos,
-                this.clienteService.findById(reservaFormDto.idCliente()),
+                this.clienteService.clienteByUsuario(reservaFormDto.idCliente()),
                 funcionario
         );
 

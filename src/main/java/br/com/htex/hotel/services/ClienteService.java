@@ -73,4 +73,7 @@ public class ClienteService {
         this.enderecoServico.save(endereco);
         this.clienteDao.save(cliente);
     }
+    public Cliente clienteByUsuario(Integer id){
+        return this.clienteDao.clienteByUsuario(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+    }
 }
